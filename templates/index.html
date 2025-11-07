@@ -1,6 +1,39 @@
-{% extends 'base.html' %}
-{% block content %}
-<h1>Welcome to Nerdverse 🧠</h1>
+{% extends 'base.html' %} {% block content %}
+<h1>Welcome to NerdVerse 🧠</h1>
 <p>Explore wishlists, discover categories, and share your nerdy passions!</p>
 
+<div class="row mt-4">
+  {% for item in wishlist_items %}
+  <div class="col-md-4 mb-4">
+    <div class="card h-100">
+      {% if item.image %}
+      <img
+        src="{{ item.image.url }}"
+        class="card-img-top"
+        alt="{{ item.title }}"
+      />
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ item.title }}</h5>
+        <p class="card-text">{{ item.description|truncatewords:20 }}</p>
+        {% if item.link %}
+        <a href="{{ item.link }}" class="btn btn-sm btn-primary" target="_blank"
+          >Learn More</a
+        >
+        {% endif %}
+      </div>
+      <div class="card-footer text-muted">
+        <small>
+          {% if item.category %} Category: {{ item.category.name }}<br />
+          {% else %} Category: Uncategorized<br />
+          {% endif %} By: {{ item.user.username }}<br />
+          {{ item.created_at|date:"M d, Y" }}
+        </small>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <p>No wishlist items found.</p>
+  {% endfor %}
+</div>
 {% endblock %}
