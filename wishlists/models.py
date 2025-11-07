@@ -4,7 +4,7 @@ from categories.models import Category
 
 class WishlistItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     link = models.URLField(blank=True)
@@ -13,4 +13,4 @@ class WishlistItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.title} ({self.category})"
+        return f"{self.title} ({self.category or 'No Category'})"
