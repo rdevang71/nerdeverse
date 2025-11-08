@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
+
+def logout_view(request):
+    auth_logout(request)
+    return redirect('/')
 
 def login_view(request):
     if request.method == 'POST':
@@ -11,7 +16,7 @@ def login_view(request):
             return redirect('/')
     else:
         form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})  # 👈 no app prefix
+    return render(request, 'login.html', {'form': form}) 
 
 def register_view(request):
     if request.method == 'POST':
@@ -22,4 +27,8 @@ def register_view(request):
             return redirect('/')
     else:
         form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})  # 👈 no app prefix
+    return render(request, 'register.html', {'form': form}) 
+
+def logout_view(request):
+    auth_logout(request)
+    return redirect('/')
