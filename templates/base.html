@@ -16,14 +16,66 @@
       body {
         background-color: #f8f9fa;
       }
+
+      .navbar {
+        transition: background-color 0.3s ease;
+      }
+
       .navbar-brand {
         font-weight: bold;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+        color: #ffc107 !important;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
       }
+
+      .profile-greeting {
+        display: flex;
+        align-items: center;
+        color: #ffffff;
+        font-size: 1rem;
+        animation: fadeInLeft 1s ease-in-out;
+      }
+
+      .profile-pic {
+        width: 36px;
+        height: 36px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 8px;
+        border: 2px solid #ffc107;
+        transition: transform 0.3s ease;
+      }
+
+      .profile-pic:hover {
+        transform: scale(1.1);
+      }
+
+      .nav-link {
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: #ffc107 !important;
+        transform: translateY(-2px);
+      }
+
       footer {
         background-color: #343a40;
         color: white;
         padding: 1rem 0;
+      }
+
+      @keyframes fadeInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
     </style>
 
@@ -31,9 +83,22 @@
   </head>
   <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">NerdVerse</a>
+        <a class="navbar-brand" href="/">
+          NerdVerse
+          {% if user.is_authenticated %}
+          <span class="profile-greeting">
+            {% if user.profile.profile_picture %}
+              <img src="{{ user.profile.profile_picture.url }}" alt="Profile" class="profile-pic" />
+            {% endif %}
+            Hey nerd, {{ user.username }}!
+          </span>
+          {% else %}
+          <span class="profile-greeting">Maybe we know your name, nerd.</span>
+          {% endif %}
+        </a>
+
         <button
           class="navbar-toggler"
           type="button"
@@ -42,27 +107,20 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
+          <ul class="navbar-nav ms-auto align-items-center">
             <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-            <li class="nav-item">
-              <a class="nav-link" href="/wishlists">Your Wishlist</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/create">Create</a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="/wishlists">Your Wishlist</a></li>
+            <li class="nav-item"><a class="nav-link" href="/create">Create</a></li>
 
             {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="/logout">Logout</a>
             </li>
             {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
             {% endif %}
           </ul>
         </div>
